@@ -1,22 +1,16 @@
 import React from 'react'
-import Navbar from '../component/Navbar'
-import CreateCard from '../component/CreateCard'
-import MCreateDeck from '../component/MCreateDeck'
-import PrepareStudy from '../component/PrepareStudy'
-import Card from '../component/Card'
+// import { useSelector, useDispatch } from 'react-redux'
+// import { decrement, increment } from '../store/userSlice'
 
 function Home() {
-  
+
+  // const count = useSelector((state) => state.user.value)
+  // const dispatch = useDispatch()
+
   return (
     <div>
-      <Navbar/>
-      <div className='mx-24'>
-        <Card/>
-        <MCreateDeck/>
-      </div>
-      
+      <h1>Trang chủ</h1>
     </div>
-    
   )
 }
 

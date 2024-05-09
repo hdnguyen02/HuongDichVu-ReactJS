@@ -11,12 +11,12 @@ function Decks() {
         <hr className="my-12"></hr>
         <div className="decks">
             <div className="deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8">
-                <div class="deck-left flex gap-x-6">
+                <div className="deck-left flex gap-x-6">
                     <span className="flex items-center font-medium">Sinh học</span>
                     <span className="flex items-center">20 thẻ</span>
                     <span className="flex items-center">20/11/2023</span>
                 </div>
-                <div class="deck-right flex gap-x-2 items-center">
+                <div className="deck-right flex gap-x-2 items-center">
                     <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                         Chia sẽ
                     </button>

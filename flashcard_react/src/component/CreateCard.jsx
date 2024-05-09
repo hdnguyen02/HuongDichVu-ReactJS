@@ -17,7 +17,7 @@ function CreateCard() {
 
 
             <div>
-                <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                     Tạo
                 </button>
             </div>
@@ -47,7 +47,7 @@ function CreateCard() {
                         </div>
                     </div>
                 </div>
-                <div class="site-file flex flex-col gap-y-3">
+                <div className="site-file flex flex-col gap-y-3">
                     <span>Hình ảnh</span>
                     <input type="file" />
                     <span>Âm thanh</span>

@@ -28,7 +28,7 @@ function PrepareStudy() {
         <div className="flex flex-col gap-y-3">
         <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                         Thêm thẻ
-                    </button>s
+                    </button>
                     <button className="bg-ctgray hover:bg-gray-400 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 rounded">Học thẻ</button>
         </div>
   
