@@ -5,29 +5,30 @@ import Deck from './page/Deck'
 import Decks from './component/Decks'
 import PrepareStudy from './component/PrepareStudy'
 import SignIn from './page/SignIn'
+import CreateDeck from './component/CreateDeck'
+import EditDeck from './component/EditDeck'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { setIsAuthenticated, setCredential } from './store/userSlice'
 import { baseUrl, userInfoUrl } from './global'
 
-function App() {
-  const dispatch = useDispatch()
 
+function App() {
 
   async function checkAuthenticate(token) {
+
     const url = baseUrl + userInfoUrl
     const jsonRp = await fetch(url, {
       method: 'GET',
       headers: {
-        "Authorization": `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       },
     })
     const response = await jsonRp.json()
     if (!jsonRp.ok) {
-      throw new Error(response.message)
+      localStorage.setItem('isAuthenticated', false) 
+      return 
     }
-    dispatch(setIsAuthenticated(true))
-    dispatch(setCredential(response.data.user))
+    localStorage.setItem('isAuthenticated', true) 
+    localStorage.setItem('email', response.data.email) 
   }
 
 
@@ -47,6 +48,8 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/decks" element={<Deck />} >
             <Route path='' element={<Decks />} />
+            <Route path='create' element={<CreateDeck />} />
+            <Route path='edit/:id' element={<EditDeck />} />
             <Route path='prepare' element={<PrepareStudy />} />
           </Route>
           <Route path='/sign-in' element={<SignIn />} />

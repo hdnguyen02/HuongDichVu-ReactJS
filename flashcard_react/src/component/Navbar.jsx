@@ -1,24 +1,45 @@
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { baseUrl, authSignOutUrl } from '../global'
 
 
 function Navbar() {
+  const email = localStorage.getItem('email')
+  const isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'))
 
-  const credential = useSelector(state => state.user.credential)
-  const isAuthenticated = useSelector(state => state.user.isAuthenticated)
+
+  async function handleSignOut() {
+    try { 
+    const url = baseUrl + authSignOutUrl
+    const token = localStorage.getItem('accessToken')
+    await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    localStorage.removeItem('accessToken')
+    localStorage.setItem('isAuthenticated', false)
+    localStorage.setItem('email', null)
+    window.location.reload('/')
+  }
+  catch(error) {
+    console.log(error)
+  }
+}
 
   return <nav className="bg-[#F0F6F6] mb-12 h-20 px-24 flex justify-between items-center">
     <div className=''>
-      <span className='text-blue-700 text-3xl font-bold'>
+      <Link to={"/"} className='text-blue-700 text-3xl font-bold'>
         Flashcard
-      </span>
-    
+      </Link>
+
     </div>
     <div>
-      <ul className='flex gap-x-3'>
-        <Link to={"/"} className='hover:cursor-pointer'>Trang chủ</Link>
-        <Link to={"/decks"} className='hover:cursor-pointer'>Bộ thẻ</Link>
-        <Link to={"/classes"} className='hover:cursor-pointer'>Lớp</Link>
+      <ul className='flex gap-x-8'>
+        <Link to={"/"} className='hover:cursor-pointer font-medium'>Trang chủ</Link>
+        {isAuthenticated && <Link to={"/decks"} className='hover:cursor-pointer font-medium'>Bộ thẻ</Link>}
+        {isAuthenticated && <li className='hover:cursor-pointer font-medium'>Lớp</li>}
+        <li className='hover:cursor-pointer font-medium'>Liên hệ</li>
       </ul>
     </div>
     {/* ẩn hiện tùy theo authenticate*/}
@@ -33,11 +54,22 @@ function Navbar() {
       </div>
     )}
     {isAuthenticated && (
-      <div className='flex gap-x-3'>
-        profile người dùng
+      <div className='flex gap-x-2 items-center'>
+        <div className='dropdown'>
+          <div className='h-2'></div>
+          <div className='dropdown-btn h-9 w-9 rounded-full overflow-hidden cursor-pointer'>
+            <img src="../../public/avatar.avif" className='w-full h-full' alt="" />
+          </div>
+          <div className='h-2'></div>
+          <div className="dropdown-content-left">
+            <span className='text-sm font-bold'>{email}</span>
+            <a className=''>Cài đặt</a>
+            <a onClick={handleSignOut}>Đăng xuất</a>
+          </div>
+        </div>
+        <img src='../../public/down-arrow.png' className='w-4 h-4'></img>
       </div>
     )}
-
   </nav>
 }
 
