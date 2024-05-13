@@ -25,6 +25,7 @@ function App() {
     const response = await jsonRp.json()
     if (!jsonRp.ok) {
       localStorage.setItem('isAuthenticated', false) 
+      localStorage.removeItem('accessToken')
       return 
     }
     localStorage.setItem('isAuthenticated', true) 

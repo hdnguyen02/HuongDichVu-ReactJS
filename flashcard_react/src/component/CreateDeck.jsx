@@ -29,7 +29,8 @@ function MCreateCard() {
               throw new Error(response.message)
             } 
             successRef.current.show(response.message, 2000)
-            
+            setName('')
+            setDescription('')
           }
           catch (error) {
             failRef.current.show(error.message, 2000)

@@ -57,7 +57,7 @@ function EditDeck() {
             const response = await jsonRp.json()
             if (!jsonRp.ok) {
               throw new Error(response.message)
-            } 
+            }
             successRef.current.show(response.message, 2000)
           }
           catch (error) {
