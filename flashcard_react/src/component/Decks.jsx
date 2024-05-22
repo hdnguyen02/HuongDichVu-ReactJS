@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import DeleteDeck from './DeleteDeck'
 import Success from './Success'
 import Fail from './Fail'
+import { useNavigate } from 'react-router-dom'
 
 function Decks() {
 
@@ -13,8 +14,10 @@ function Decks() {
     const refFail = useRef()
     const [idDeckDelete, setIdDeckDelete] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
+    const navigate = useNavigate()
 
     async function handleDeleteDeck() {
+
 
         const accessToken = localStorage.getItem('accessToken')
         const url = `${baseUrl + version}/decks/${idDeckDelete}`
@@ -47,7 +50,8 @@ function Decks() {
         setIdDeckDelete(null)
     }
 
-    function showPopupDeleteDeck(id) {
+    function showPopupDeleteDeck(event,id) {
+        event.stopPropagation()
         document.getElementById('popup-delete-deck').style.display = 'flex'
         setIdDeckDelete(id)
     }
@@ -75,6 +79,10 @@ function Decks() {
         catch (error) {
             console.log(error.message)
         }
+    }
+
+    function handleDetailDeck(id) {
+        navigate(`/decks/${id}`)
     }
 
     useEffect(() => {
@@ -117,7 +125,7 @@ function Decks() {
         {decks &&
             <div className='mt-8'>
                 {decks.map(deck => (
-                    <div key={deck.id} className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4'>
+                    <div onClick={() => {handleDetailDeck(deck.id)}} key={deck.id} className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4'>
                         <div className='deck-left flex gap-x-6'>
                             <span className='flex items-center font-medium min-w-40'>{deck.name}</span>
                             <span className='flex items-center min-w-12'>{deck.numberCards} thẻ</span>
@@ -127,10 +135,12 @@ function Decks() {
                             <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
                                 Chia sẽ
                             </button>
-                            <button onClick={() => showPopupDeleteDeck(deck.id)} className='bg-ctred hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-900 hover:border-red-600 rounded'>
+                            <button onClick={(event) => showPopupDeleteDeck(event, deck.id)} className='bg-ctred hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-900 hover:border-red-600 rounded'>
                                 Xóa
-                            </button>
-                            <Link to={`/decks/edit/${deck.id}`} className='bg-ctgray hover:bg-gray-400 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 rounded'>Chỉnh sữa</Link>
+                            </button>       
+                            <Link to={`/decks/edit/${deck.id}`} onClick={event => {
+                                event.stopPropagation()
+                            }} className='bg-ctgray hover:bg-gray-400 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 rounded'>Chỉnh sửa</Link>
                         </div>
                     </div>
                 ))}

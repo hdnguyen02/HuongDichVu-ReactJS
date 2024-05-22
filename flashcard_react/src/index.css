@@ -76,6 +76,6 @@
   cursor: pointer;
 }
 
-input:focus {
-  outline: none !important; 
+input:focus{
+  border: transparent;
 }

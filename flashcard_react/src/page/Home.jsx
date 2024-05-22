@@ -2,11 +2,9 @@ import React from 'react'
 
 
 function Home() {
-
-
   return (
     <div>
-      <h1>Trang chủ</h1>
+      Trang home
     </div>
   )
 }

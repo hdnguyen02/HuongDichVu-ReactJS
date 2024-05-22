@@ -38,7 +38,8 @@ function Navbar() {
       <ul className='flex gap-x-8'>
         <Link to={"/"} className='hover:cursor-pointer font-medium'>Trang chủ</Link>
         {isAuthenticated && <Link to={"/decks"} className='hover:cursor-pointer font-medium'>Bộ thẻ</Link>}
-        {isAuthenticated && <li className='hover:cursor-pointer font-medium'>Lớp</li>}
+        {isAuthenticated && <Link to={"/cards"} className='hover:cursor-pointer font-medium'>Thẻ</Link>}
+        {isAuthenticated && <Link to={"/classes"} className='hover:cursor-pointer font-medium'>Lớp</Link>}
         <li className='hover:cursor-pointer font-medium'>Liên hệ</li>
       </ul>
     </div>
