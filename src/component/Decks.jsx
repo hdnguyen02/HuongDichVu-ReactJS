@@ -1,48 +1,74 @@
 
 import { useRef, useState, useEffect } from 'react'
-import { baseUrl, version } from '../global'
-import { Link } from 'react-router-dom'
+import { fetchData } from '../global'
+import { Link, useNavigate } from 'react-router-dom'
 import DeleteDeck from './DeleteDeck'
 import Success from './Success'
 import Fail from './Fail'
-import { useNavigate } from 'react-router-dom'
+import ModelCreateDeck from './ModelCreateDeck'
+import ModelEditDeck from './ModelEditDeck'
+import Modal from "react-modal"
+
+
 
 function Decks() {
+
+    const appElement = document.getElementById("root");
+    Modal.setAppElement(appElement)
+    
+    const navigate = useNavigate()
 
     const [decks, setDecks] = useState()
     const refSuccess = useRef()
     const refFail = useRef()
+    const refModelCreateDeck = useRef()
+    const refModelEditDeck = useRef()
     const [idDeckDelete, setIdDeckDelete] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
-    const navigate = useNavigate()
+    
+    // * state modal
+    const [isShowModalStudy, setIsShowModalStudy] = useState(false)
+
+
+    const showModalStudystyles = {
+        content: {
+          width: "400px",
+          height: "100px",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: 'while',
+          padding: "20px",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+     
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          outline: "none",
+          overflow: "auto",
+          display: "flex", 
+          justifyContent: 'center',
+          alignItems: 'center'
+
+          
+        },
+      };
+
+
+    
+
 
     async function handleDeleteDeck() {
-
-
-        const accessToken = localStorage.getItem('accessToken')
-        const url = `${baseUrl + version}/decks/${idDeckDelete}`
+        const subUrl = `/decks/${idDeckDelete}`
         try {
-            const jsonRp = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                },
-            })
-            const response = await jsonRp.json()
-            if (!jsonRp.ok) {
-                throw new Error(response.message)
-            }
-            const data = response.data
-            const message = response.message
-            refSuccess.current.show(2000, message)
-            fetchDecks()
-            handleCancel() // đóng thẻ lại
+            await fetchData(subUrl, 'DELETE')
+            await getDecks()
+            refSuccess.current.show('Xóa bộ thẻ thành công', 2000)
         }
         catch (error) {
-            failRef.current.show(error.message, 2000)
+            failRef.current.show('Đã có lỗi xảy ra!', 2000)
         }
+        handleCancel()
         setIdDeckDelete(null)
-
     }
 
     function handleCancel() {
@@ -50,61 +76,56 @@ function Decks() {
         setIdDeckDelete(null)
     }
 
-    function showPopupDeleteDeck(event,id) {
+    function showPopupDeleteDeck(event, id) {
         event.stopPropagation()
         document.getElementById('popup-delete-deck').style.display = 'flex'
         setIdDeckDelete(id)
     }
 
 
-
-    async function fetchDecks(searchDecks) {
-        const accessToken = localStorage.getItem('accessToken')
-        let url
-        if (searchDecks && searchDecks != '') url = url = `${baseUrl + version}/decks?searchTerm=${searchDecks}`
-        else url = `${baseUrl + version}/decks`
+    async function getDecks(searchDecks) {
+        let subUrl
+        if (searchDecks && searchDecks != '') subUrl = `/decks?searchTerm=${searchDecks}`
+        else subUrl = `/decks`
         try {
-            const jsonRp = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                },
-            })
-            const response = await jsonRp.json()
-            if (!jsonRp.ok) {
-                throw new Error(response.message)
-            }
+            const response = await fetchData(subUrl, 'GET')
             setDecks(response.data)
         }
         catch (error) {
-            console.log(error.message)
+            console.log(error)
         }
     }
 
-    function handleDetailDeck(id) {
-        navigate(`/decks/${id}`)
+    function handleEditDeck(id) {
+        refModelEditDeck.current.show(id)
     }
 
+    function handleLearnCard(numberCards, idDeck) { 
+        if (numberCards == 0) {
+            setIsShowModalStudy(true)
+        }
+        else { 
+            const url = `/decks/${idDeck}/learn-cards`
+            navigate(url)
+        }
+    }
+
+
     useEffect(() => {
-        fetchDecks(searchTerm)
+        getDecks(searchTerm)
     }, [searchTerm])
 
 
-    
+
 
     return <div>
-        <div className='profile flex gap-x-3 items-center justify-between font-medium'>
-            <div className='flex gap-x-3 items-center'>
-                <div className='rounded-full overflow-hidden h-9 w-9'>
-                    <img className='object-cover w-full h-full' src='../../public/avatar.avif' alt='Avatar' />
-                </div>
-                <h1>Thầy Thuận badboi</h1>
-            </div>
+        <ModelCreateDeck ref={refModelCreateDeck} getDecks={getDecks} />
+        <ModelEditDeck ref={refModelEditDeck} getDecks={getDecks} />
+        <div className='profile flex gap-x-3 items-center justify-end font-medium pb-2'>
             <div className='flex gap-x-8 items-center'>
-
-                <Link to={'/decks/create'} className=''>
+                <button onClick={() => { refModelCreateDeck.current.show() }} className=''>
                     <img src="plus.png" className='w-9' alt="" />
-                </Link>
+                </button>
                 <div className="max-w-md mx-auto">
                     <div className="relative">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -114,41 +135,96 @@ function Decks() {
                         </div>
                         <input onChange={(event) => {
                             setSearchTerm(event.target.value)
-                        }} type="search" id="decks-search" className="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Tên, mô tả..." />
+                        }} type="search" id="decks-search" className="block w-full  px-4 h-10 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Tên, mô tả..." />
                     </div>
                 </div>
             </div>
         </div>
 
-        <hr className='my-12'></hr>
+        <hr className='my-4'></hr>
 
         {decks &&
-            <div className='mt-8'>
-                {decks.map(deck => (
-                    <div onClick={() => {handleDetailDeck(deck.id)}} key={deck.id} className='cursor-pointer deck flex justify-between bg-[#EDEFFF] rounded-md py-4 px-8 mb-4'>
-                        <div className='deck-left flex gap-x-6'>
-                            <span className='flex items-center font-medium min-w-40'>{deck.name}</span>
-                            <span className='flex items-center min-w-12'>{deck.numberCards} thẻ</span>
-                            <span className='flex items-center'>{deck.createAt}</span>
-                        </div>
-                        <div className='deck-right flex gap-x-2 items-center'>
-                            <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
-                                Chia sẽ
-                            </button>
-                            <button onClick={(event) => showPopupDeleteDeck(event, deck.id)} className='bg-ctred hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-900 hover:border-red-600 rounded'>
-                                Xóa
-                            </button>       
-                            <Link to={`/decks/edit/${deck.id}`} onClick={event => {
-                                event.stopPropagation()
-                            }} className='bg-ctgray hover:bg-gray-400 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 rounded'>Chỉnh sửa</Link>
-                        </div>
-                    </div>
-                ))}
+            <div className=''>
+                <div className="relative overflow-x-auto sm:rounded-lg">
+
+                    {decks.length != 0 ?
+                        (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">
+                                        Tên
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Số thẻ
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Ngày tạo
+                                    </th>
+                                    <th className='text-center'>Học thẻ</th>
+                                    <th className='text-center'>Chia sẻ</th>
+                                    <th className='text-center'>Hiệu chỉnh</th>
+                                    <th className='text-center'>Xóa</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {decks.map(deck => (
+                                    <tr key={deck.id} className="odd:bg-white even:bg-gray-50">
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            {deck.name}
+                                        </th>
+                                        <td className="px-6 py-4">
+                                            {deck.numberCards}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {deck.createAt}
+                                        </td>
+                                        <td className='px-6 py-4 text-center'>
+                                            <button onClick={() => handleLearnCard(deck.numberCards, deck.id)}>
+                                                {/* to={`/decks/${deck.id}/learn-cards`} */}
+                                                <i className="fa-solid fa-graduation-cap text-xl"></i>
+                                            </button>
+
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            <i className="fa-solid fa-share text-xl"></i>
+                                        </td>
+
+                                        <td className="px-6 py-4 text-center">
+                                            <button onClick={() => handleEditDeck(deck.id)} ><i className="fa-regular fa-pen-to-square text-xl"></i>
+                                            </button>
+                                        </td>
+                                        <td onClick={(event) => showPopupDeleteDeck(event, deck.id)} className="px-6 py-4 text-center">
+                                            <i className="fa-regular fa-trash-can text-xl"></i>
+                                        </td>
+
+                                    </tr>
+                                ))}
+
+                            </tbody>
+                        </table>) : (<div>
+                            <span className='text-sm'>Không có dữ liệu</span>
+                        </div>)
+                    }
+                    <hr className='my-4' />
+                </div>
+
+                {/* ))} */}
             </div>
         }
         <DeleteDeck idDeckDelete={idDeckDelete} handleCancle={handleCancel} handleDeleteDeck={handleDeleteDeck} />
         <Success ref={refSuccess} />
         <Fail ref={refFail} />
+
+        <Modal
+        isOpen={isShowModalStudy}
+        onRequestClose={() => setIsShowModalStudy(false)}
+        contentLabel="Custom Modal"
+        style={showModalStudystyles}
+      >
+        <p className='text-center'>Bạn chưa có thẻ nào trong bộ thẻ, <Link to={'/cards'} className='text-blue-700 underline'>Tạo bộ thẻ</Link>
+        </p>
+      </Modal>
     </div>
 }
 

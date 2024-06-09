@@ -1,60 +1,50 @@
 
-import React, { useEffect, useRef, useState } from 'react'
-import { baseUrl, version } from '../global'
+import React, { useEffect, useState } from 'react'
+import {baseUrl,version, fetchData } from '../global'
 import { useParams } from 'react-router-dom'
-import Fail from '../component/Fail'
-import Success from '../component/Success'
-import { Link } from 'react-router-dom'
 
 function Card() {
 
-    const accessToken = localStorage.getItem('accessToken')
+
     const params = useParams()
     const idDeck = params.id
-    const failRef = useRef()
-    const successRef = useRef()
     const [cards, setCards] = useState()
-
-    // một biến index cảm biến.  
+    const [deck, setDeck] = useState()
     const [index, setIndex] = useState(0)
-    const [isFlip, setIsFlip] = useState(false)
+    const accessToken = localStorage.getItem('accessToken')
 
 
     async function getCards() {
-        const url = `${baseUrl + version}/cards?idDeck=${idDeck}`
-        try {
-            const jsonRp = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-            })
-            const response = await jsonRp.json()
-            if (!jsonRp.ok) {
-                throw new Error(response.message)
-            }
+        const subUrl = `/cards/filter?idDeck=${idDeck}`
+        try { 
+            const response = await fetchData(subUrl, 'GET')
             setCards(response.data)
         }
-        catch (error) {
-            failRef.current.show(error.message, 2000)
+        catch(error) { 
+            console.log(error.message)
         }
-
-
     }
 
+    async function getDeck() {
+        const subUrl = `/decks/${params.id}`
+        try { 
+            const response = await fetchData(subUrl, 'GET')
+            setDeck(response.data)
+        }
+        catch(error) {
+            console.log(error.message)
+        }
+    }
+
+
     useEffect(() => {
+        getDeck()
         getCards()
     }, [])
 
 
-
-    function handleFlip() {
-        setIsFlip(!isFlip)
-    }
-
     function handleNextCard() {
-        setIsFlip(false)
+        document.getElementById('card').classList.remove('is-flipped')
         const lenCards = cards.length
         if (index == lenCards - 1) {
             setIndex(0)
@@ -63,8 +53,9 @@ function Card() {
             setIndex(index + 1)
         }
     }
+
+
     function handlePreCard() {
-        setIsFlip(false)
         const lenCards = cards.length
         if (index == 0) {
             setIndex(lenCards - 1)
@@ -76,7 +67,8 @@ function Card() {
 
 
     function front() {
-        return <div className='flex flex-col gap-y-3'>
+        return <div className='h-full relative flex flex-col items-center justify-center'>
+            {action()}
             {cards[index].image && <div className="h-40 flex justify-center">
                 <img className="object-contain" src={cards[index].image} />
             </div>}
@@ -86,56 +78,92 @@ function Card() {
 
 
     function back() {
-        return <div className='flex flex-col gap-y-3'>
+        return <div className='h-full relative flex flex-col items-center justify-center'>
+            {action()}
             <p className="text-2xl text-center">{cards[index].definition}</p>
-            {cards[index].example && <p className="text-2xl text-center">{cards[index].example}</p>}
-
+            {cards[index].example && <p className="text-xl text-center">{cards[index].example}</p>}
         </div>
     }
 
 
-    return <div className="flex justify-center">
-        {cards && <div className="w-[700px]">
-            <div className='flex justify-between items-center w-full' >
-                <div>
-                    <Link to={"/decks"} className='flex items-center gap-x-3 cursor-pointer text-blue-600 underline'>
-                        <img className='w-5 h-5' src="../../public/back.png" alt="" />
-                        <span>Chi tiết bộ thẻ</span>
-                    </Link>
-                </div>
-                <button onClick={handleFlip} className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                    Lật thẻ
+    // cho thích thẻ + đã nhớ
+    async function favouriteCard() {
+        const id = cards[index].id
+        const card = cards[index]
+        const formData = new FormData()
+        if (card.isFavourite) { 
+            formData.append('isFavourite', false) 
+        }
+        else { 
+            formData.append('isFavourite', true) 
+        }
+        const url = `${baseUrl + version}/cards/${id}`
+        try {
+            const jsonRp = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+                body: formData
+            })
+            const response = await jsonRp.json()
+            if (!jsonRp.ok) {
+                throw new Error(response.message)
+            }
+            getCards()
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
+
+
+    function action() {
+        return (
+            <div className='absolute top-4 right-8 flex items-center gap-x-3'>
+                <button
+                    onClick={event => {
+                        event.stopPropagation()
+                        favouriteCard()
+                    }}
+                >
+                    { 
+                        cards[index].isFavourite ? (<i className="fa-regular fa-heart text-xl font-light text-red-500"></i>) 
+                        : (<i className="fa-regular fa-heart text-xl font-light"></i>)
+                    }
+                    
                 </button>
+                <button><i className="fa-regular fa-star text-xl font-light"></i></button>
             </div>
-            <div className="mt-5 bg-[#F0F6F6] p-3 rounded-lg shadow-lg flex flex-col justify-between h-[360px]">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-x-3">
-                        <span className="cursor-pointer"><i className="fa-regular fa-star"></i></span>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                        <span className="cursor-pointer"><i className="fa-regular fa-heart"></i></span>
-                        <span className='cursor-pointer'><i className="fa-solid fa-volume-high"></i></span>
-                    </div>
+        )
+    }
 
-                </div>
-                {!isFlip && front()}
-                {isFlip && back()}
+    function handleFlipCard(event) {
+        event.currentTarget.classList.toggle('is-flipped')
+    }
 
-                <div className="flex items-center justify-between">
-                    <Link to={`/cards/edit/${cards[index].id}`}><i className="fa-regular fa-pen-to-square"></i></Link>
-                    <span><i className="fa-solid fa-trash"></i></span>
+    return (cards && cards.length != 0 &&
+        <div className='flex justify-center'>
+            <div className="card-container">
+                {
+                    deck && (<h3 className='text-xl font-medium'>Bộ thẻ: { deck.name }</h3>)
+                } 
+                <div className="mt-12 card mx-auto" id="card" onClick={handleFlipCard}>
+                    <div className="card-front">
+                        {front()}
+                    </div>
+                    <div className="card-back">
+                        {back()}
+                    </div>
                 </div>
-            </div>
-            <div className='flex gap-x-3 justify-center items-center mt-5'>
-                <button onClick={handlePreCard} className="bg-[#F0F6F6]  h-10 w-10 rounded-full"><i className="fa-solid fa-arrow-left"></i></button>
-                <span className='font-medium text-xl pb-1'>2/9</span>
-                <button onClick={handleNextCard} className="bg-[#F0F6F6]  h-10 w-10 rounded-full"><i className="fa-solid fa-arrow-right"></i></button>
+                <div className='flex gap-x-6 justify-center items-center mt-5'>
+                    <button onClick={handlePreCard} className="bg-[#F0F6F6] h-12 w-12 rounded-full"><i className="fa-solid fa-chevron-left text-xl"></i></button>
+                    <span className='text-xl'>{index + 1}/{cards.length}</span>
+                    <button onClick={handleNextCard} className="bg-[#F0F6F6] h-12 w-12 rounded-full"><i className="fa-solid fa-chevron-right text-xl"></i></button>
+                </div>
             </div>
         </div>
-        }
-        <Success ref={successRef} />
-        <Fail ref={failRef} />
-    </div>
+    )
 }
 
 export default Card
