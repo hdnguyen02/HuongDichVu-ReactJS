@@ -55,7 +55,7 @@ const ModelEditDeck = React.forwardRef(({ getDecks }, ref) => {
     }));
 
     return (isShow && deck && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
-        <div className="bg-white p-6 rounded shadow-lg z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg z-50">
             <div className="flex justify-end">
                 <button onClick={close} className="pr-2">
                     <i className="fa-solid fa-xmark text-4xl text-gray-500"></i>

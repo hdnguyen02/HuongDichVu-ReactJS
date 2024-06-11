@@ -1,13 +1,16 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import useAuth from '../context/AuthContext'
 
 
 function Navbar() {
-  const isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'))
+
+  const {auth, signOut} = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
   function handleSignOut() {
-    localStorage.clear()
-    window.location.reload('/')
+    signOut()
+    navigate('/')
   }
 
   function handleShowMenu() {
@@ -32,21 +35,21 @@ function Navbar() {
         <li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname === '/' ? 'link-active' : ''} to={'/'} >Trang chủ</Link>
         </li>
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname.includes('/decks') ? 'link-active' : ''} to={'/decks'} >Bộ thẻ</Link>
         </li>}
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname.includes('/cards') ? 'link-active' : ''} to={'/cards'} >Thẻ</Link>
         </li>}
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
-          <Link className={location.pathname.includes('/classes') ? 'link-active' : ''} to={'/classes/owner'} >Lớp</Link>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
+          <Link className={location.pathname.includes('/groups') ? 'link-active' : ''} to={'/groups/owner'} >Lớp</Link>
         </li>}
         <li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname === '/contact' ? 'link-active' : ''} to={'/contact'} >Liên hệ</Link>
         </li>
       </ul>
       {/* ẩn hiện tùy theo authenticate*/}
-      {!isAuthenticated && (
+      {!auth && (
         <div className='mr-14 md:mr-0 flex gap-x-3'>
           <Link to='sign-in' className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
             Đăng nhập
@@ -56,7 +59,7 @@ function Navbar() {
           </Link>
         </div>
       )}
-      {isAuthenticated && (
+      {auth && (
         <div className='mr-14 md:mr-0 flex gap-x-2 items-center'>
           <div className='dropdown'>
             <div className='h-2'></div>
@@ -85,13 +88,13 @@ function Navbar() {
           <li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname === '/' ? 'link-active-mobile' : ''} to={'/'} >Trang chủ</Link>
         </li>
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname.includes('/decks') ? 'link-active-mobile' : ''} to={'/decks'} >Bộ thẻ</Link>
         </li>}
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname.includes('/cards') ? 'link-active-mobile' : ''} to={'/cards'} >Thẻ</Link>
         </li>}
-        {isAuthenticated &&<li className='hover:cursor-pointer font-medium'>
+        {auth &&<li className='hover:cursor-pointer font-medium'>
           <Link className={location.pathname.includes('/classes') ? 'link-active-mobile' : ''} to={'/classes'} >Lớp</Link>
         </li>}
 

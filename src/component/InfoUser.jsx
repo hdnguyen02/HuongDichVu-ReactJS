@@ -1,32 +1,20 @@
-import Fail from "./Fail"
-import Success from "./Success"
+
 import { useEffect, useRef, useState } from "react"
-import { baseUrl } from "../global"
+import { baseUrl, fetchData, showToastMessage, showToastError } from "../global"
+import { ToastContainer } from "react-toastify"
+
 export default function InfoUser() {
 
-    const failRef = useRef(null)
-    const successRef = useRef(null)
     let isChangeAvatar = false
     const [user, setUser] = useState()
     async function getUser() {
+        const subUrl = '/users/info'
         try {
-            const accessToken = localStorage.getItem('accessToken')
-            const url = baseUrl + '/api/v1/users/info'
-            const jsonRp = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                },
-            })
-            const response = await jsonRp.json()
-            if (!jsonRp.ok) {
-                console.log("vào lỗi")
-                throw new Error(response.message)
-            }
+            const response = await fetchData(subUrl, 'GET')
             setUser(response.data)
         }
         catch (error) {
-            failRef.current.show(error.message, 2000)
+            showToastError(error.message)
         }
     }
 
@@ -34,7 +22,8 @@ export default function InfoUser() {
     async function handleChangeInfo(event) {
         event.preventDefault()
         const accessToken = localStorage.getItem('accessToken')
-        const url = `${baseUrl}/api/v1/users/info`
+        const url = `${baseUrl}/users/info`
+        console.log(url)
         const elName = document.getElementById('name')
         const elGender = document.getElementById('gender')
         const elAge = document.getElementById('age')
@@ -62,10 +51,11 @@ export default function InfoUser() {
             if (!jsonRp.ok) {
                 throw new Error(response.message)
             }
-            successRef.current.show(response.message, 2000)
+            showToastMessage('Hiệu chỉnh thông tin thành công')
+        
         }
         catch (error) {
-            failRef.current.show(error.message, 2000)
+            showToastError(error.message)
         }
     }
 
@@ -225,7 +215,6 @@ export default function InfoUser() {
                 </div>
             </form>
         </div>
-        <Fail ref={failRef} />
-        <Success ref={successRef} />
+        <ToastContainer/>
     </div>)
 }

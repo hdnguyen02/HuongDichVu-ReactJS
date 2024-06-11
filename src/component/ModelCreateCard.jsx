@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { baseUrl, version } from "../global"
+import { baseUrl } from "../global"
 
 const ModelCreateCard = React.forwardRef(({ decks, getCards }, ref) => {
 
@@ -33,7 +33,7 @@ const ModelCreateCard = React.forwardRef(({ decks, getCards }, ref) => {
         formData.append('example', inputExampleCard.value)
 
         const accessToken = localStorage.getItem('accessToken')
-        const url = `${baseUrl}${version}/cards`
+        const url = `${baseUrl}/cards`
         if (inputAudioCard.files.length > 0) {
             formData.append('audio', inputAudioCard.files[0])
         }

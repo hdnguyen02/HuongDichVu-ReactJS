@@ -5,11 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import DeleteDeck from './DeleteDeck'
 import Success from './Success'
 import Fail from './Fail'
-import ModelCreateDeck from './ModelCreateDeck'
+import ModalCreateDeck from './ModalCreateDeck'
 import ModelEditDeck from './ModelEditDeck'
 import Modal from "react-modal"
-
-
 
 function Decks() {
 
@@ -21,13 +19,14 @@ function Decks() {
     const [decks, setDecks] = useState()
     const refSuccess = useRef()
     const refFail = useRef()
-    const refModelCreateDeck = useRef()
+    const refModalCreateDeck = useRef()
     const refModelEditDeck = useRef()
     const [idDeckDelete, setIdDeckDelete] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
     
-    // * state modal
+
     const [isShowModalStudy, setIsShowModalStudy] = useState(false)
+
 
 
     const showModalStudystyles = {
@@ -49,7 +48,6 @@ function Decks() {
           justifyContent: 'center',
           alignItems: 'center'
 
-          
         },
       };
 
@@ -119,11 +117,11 @@ function Decks() {
 
 
     return <div>
-        <ModelCreateDeck ref={refModelCreateDeck} getDecks={getDecks} />
+        <ModalCreateDeck ref={refModalCreateDeck} getDecks={getDecks} />
         <ModelEditDeck ref={refModelEditDeck} getDecks={getDecks} />
-        <div className='profile flex gap-x-3 items-center justify-end font-medium pb-2'>
+        <div className='profile flex gap-x-3 items-center justify-end font-medium h-12'>
             <div className='flex gap-x-8 items-center'>
-                <button onClick={() => { refModelCreateDeck.current.show() }} className=''>
+                <button onClick={() => { refModalCreateDeck.current.show() }} className=''>
                     <img src="plus.png" className='w-9' alt="" />
                 </button>
                 <div className="max-w-md mx-auto">
@@ -141,7 +139,7 @@ function Decks() {
             </div>
         </div>
 
-        <hr className='my-4'></hr>
+        <hr className='my-8'></hr>
 
         {decks &&
             <div className=''>
@@ -149,54 +147,49 @@ function Decks() {
 
                     {decks.length != 0 ?
                         (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                            {/* <thead className="text-gray-700 uppercase">
                                 <tr>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-8 pt-4 pb-6">
                                         Tên
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Số thẻ
+                                    <th scope="col" className="px-8 pt-4 pb-6">
+                                        Thẻ
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Ngày tạo
+                                    <th scope="col" className="px-8 pt-4 pb-6">
+                                        Ngày tạo    
                                     </th>
-                                    <th className='text-center'>Học thẻ</th>
-                                    <th className='text-center'>Chia sẻ</th>
-                                    <th className='text-center'>Hiệu chỉnh</th>
-                                    <th className='text-center'>Xóa</th>
+                                    <th className="px-8 pt-4 pb-6"></th>
+                     
 
                                 </tr>
-                            </thead>
+                            </thead> */}
                             <tbody>
-                                {decks.map(deck => (
-                                    <tr key={deck.id} className="odd:bg-white even:bg-gray-50">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {decks.map((deck, index) => (
+                                    <tr key={index} className="odd:bg-gray-100 even:bg-white">
+                                        <th scope="row" className="px-8 py-5 text-gray-900 text-sm uppercase whitespace-nowrap">
                                             {deck.name}
                                         </th>
-                                        <td className="px-6 py-4">
+                                        <td className="font-medium px-8 py-5">
                                             {deck.numberCards}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="font-medium px-8 py-5">
                                             {deck.createAt}
                                         </td>
-                                        <td className='px-6 py-4 text-center'>
+
+                                        <td className='px-8 py-5 flex justify-end gap-x-6'>
                                             <button onClick={() => handleLearnCard(deck.numberCards, deck.id)}>
                                                 {/* to={`/decks/${deck.id}/learn-cards`} */}
                                                 <i className="fa-solid fa-graduation-cap text-xl"></i>
                                             </button>
-
-                                        </td>
-                                        <td className="px-6 py-4 text-center">
-                                            <i className="fa-solid fa-share text-xl"></i>
-                                        </td>
-
-                                        <td className="px-6 py-4 text-center">
                                             <button onClick={() => handleEditDeck(deck.id)} ><i className="fa-regular fa-pen-to-square text-xl"></i>
                                             </button>
-                                        </td>
-                                        <td onClick={(event) => showPopupDeleteDeck(event, deck.id)} className="px-6 py-4 text-center">
+
+                                            <button onClick={(event) => showPopupDeleteDeck(event, deck.id)}>
                                             <i className="fa-regular fa-trash-can text-xl"></i>
+                                        </button>
                                         </td>
+                                   
+                                    
 
                                     </tr>
                                 ))}

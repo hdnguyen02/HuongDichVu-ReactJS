@@ -2,15 +2,20 @@ import React, { useState } from 'react'
 import { fetchDataWithoutAccessToken, showToastError } from '../global'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer } from "react-toastify"
+import useAuth from '../context/AuthContext'
 
 
 export default function SignIn() {
 
+
+  const { checkAuth } = useAuth()
   const navigate = useNavigate()
-  let isShowPassword = false
+  
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [isRemember, setIsRemember] = useState()
+  
+  let isShowPassword = false
 
   
 
@@ -43,11 +48,7 @@ export default function SignIn() {
       const auth = response.data
   
       localStorage.setItem('accessToken', auth.accessToken)
-      localStorage.setItem('isAuthenticated', true)
-      localStorage.setItem('email', auth.user.email)
-      localStorage.setItem('roles', JSON.stringify(auth.user.roles))
-
-
+      checkAuth()
       navigate('/')
     }
     catch (error) {

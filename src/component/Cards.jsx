@@ -51,11 +51,6 @@ export default function Cards() {
         refModelCreateCard.current.show()
     }
 
-    // khi người dùng chọn lọc => hiển thị bộ lọc đó ra 
-    // chỉ cần vào đây kiểm tra giá trị cũ và giá trị trước đó xem có khác không. 
-    // nếu khác -> thay thế nó. 
-
-    // truyền vào chúng hàm getCard
 
 
     async function handleFilter(event) {
@@ -66,8 +61,7 @@ export default function Cards() {
 
         const target = event.target
         const field = target.name
-        console.log(field)
-        // cứ kiểm kiểm tra 3 cái input nhỉ. cái nào khác null thì hiện lên. 
+
 
         if (field == 'filter-deck') {
             // render nó ra. 
@@ -218,8 +212,27 @@ export default function Cards() {
         <ModelCreateCard decks={decks} getCards={getCards} ref={refModelCreateCard} />
         <ModelEditCard decks={decks} getCards={getCards} ref={refModelEditCard} />
         <div className='flex justify-between mt-10'>
-            <div className='flex gap-x-12'>
-                <div className='filter-dropdown relative pb-2'>
+
+            <div className='flex gap-x-8 items-center h-12'>
+
+                <div className='flex items-center gap-x-8'>
+                    <button onClick={handleDeleteCards}>
+                        <img src="delete.png" className='w-9' alt="" />
+                    </button>
+                    <button onClick={handleShowModelCreateCard} className=''>
+                        <img src="plus.png" className='w-9' alt="" />
+                    </button>
+
+                </div>
+
+                {/* search */}
+                <button className='flex items-center gap-x-2 h-10 px-5 text-sm text-center text-white rounded-md bg-green-600 sm:w-fit hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gray-300'>
+                    <span className='text-sm'>Học thẻ</span>
+                </button>
+
+            </div>
+            <div className='flex items-center gap-x-12'>
+                <div className='filter-dropdown relative'>
                     <button type="submit" className="h-10 flex items-center gap-x-2 px-5 text-sm text-center text-white rounded-md bg-primary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
                         <i className="fa-solid fa-filter"></i>
                         <span className='pb-[0.5px]'>Lọc</span>
@@ -237,32 +250,15 @@ export default function Cards() {
                         </div>
                         <input onChange={(event) => {
                             setSearchContent(event.target.value)
-                        }} type="search" id="decks-search" className="block w-56 h-10 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Thuật ngữ, Định nghĩa ..." />
+                        }} type="search" id="decks-search" className="block w-full  px-4 h-10 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Thuật ngữ, Định nghĩa ..." />
                     </div>
                 </div>
             </div>
-            <div className='flex gap-x-8 items-center pb-2'>
 
-                <div className='flex items-center gap-x-8'>
-                    <button onClick={handleDeleteCards}>
-                        <img src="delete.png" className='w-9' alt="" />
-                    </button>
-                    <button onClick={handleShowModelCreateCard} className=''>
-                        <img src="plus.png" className='w-9' alt="" />
-                    </button>
-
-                </div>
-
-              {/* search */}
-              <button className='flex items-center gap-x-2 h-10 px-5 text-sm text-center text-white rounded-md bg-green-600 sm:w-fit hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gray-300'>
-                    <span className='text-sm'>Học thẻ</span>
-                </button>
-
-            </div>
 
         </div>
 
-        <hr className='my-4'></hr>
+        <hr className='my-8'></hr>
 
         {cards &&
             <div className=''>
@@ -297,22 +293,22 @@ export default function Cards() {
 
                     </div>
                     {cards.length != 0 ?
-                        (<table className="mt-8 w-full text-sm text-left rtl:text-right text-gray-500">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                        (<table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead className="text-sm text-gray-700 uppercase">
                                 <tr>
-                                    <th scope="col" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <th scope="col" className="px-6 py-5 font-medium  text-gray-900 whitespace-nowrap">
                                         <input onChange={handleCheckAll} type='checkbox' />
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-6 py-5">
                                         Thuật ngữ
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-6 py-5">
                                         Định nghĩa
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-6 py-5">
                                         Bộ thẻ
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    <th scope="col" className="px-6 py-5">
                                         Ngày tạo
                                     </th>
                                     <th className='text-center'>Hiệu chỉnh</th>
@@ -320,24 +316,24 @@ export default function Cards() {
                             </thead>
                             <tbody>
                                 {cards.map(card => (
-                                    <tr key={card.id} className="odd:bg-white even:bg-gray-50">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <tr key={card.id} className="odd:bg-gray-100 even:bg-white">
+                                        <th scope="row" className="px-6 py-5 font-medium text-gray-900 whitespace-nowrap">
                                             <input name='checkbox-card' value={card.id} type="checkbox" />
                                         </th>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5 font-medium">
                                             {card.term}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             {card.definition}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             {card.deck.name}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-5">
                                             {card.createAt}
 
                                         </td>
-                                        <td className="px-6 py-4 text-center">
+                                        <td className="px-6 py-5 text-center">
                                             <button
                                                 onClick={event => {
                                                     handleEditCard(event, card.id)

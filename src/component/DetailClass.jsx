@@ -27,7 +27,7 @@ export default function DetailOwnerClass() {
       <div>
         <div className="flex items-center gap-x-3">
           <img className="w-12 h-12" src="/group.png" alt="" />
-          <span className="text-xl font-medium">{detailClass.name}</span>
+          <span className="text-sm uppercase font-medium">{detailClass.name}</span>
         </div>
 
         <div className="mt-4">
@@ -36,64 +36,64 @@ export default function DetailOwnerClass() {
 
             {location.pathname.includes("owner") ? (
               <Link
-                to={`/classes/detail-owner/${params.id}/members`}
+                to={`/groups/detail-owner/${params.id}/members`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/group.png" className="w-6" alt="" />
+                <img src="/group.png" className="w-6 h-6" alt="" />
                 <span>Thành viên</span>
               </Link>
             ) : (
               <Link
-                to={`/classes/detail-attendance/${params.id}/members`}
+                to={`/groups/detail-attendance/${params.id}/members`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/group.png" className="w-6" alt="" />
+                <img src="/group.png" className="w-6 h-6" alt="" />
                 <span>Thành viên</span>
               </Link>
             )}
 
             {location.pathname.includes("owner") && (
               <Link
-                to={`/classes/detail-owner/${params.id}/add-member`}
+                to={`/groups/detail-owner/${params.id}/add-member`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/plus.png" className="w-6" alt="" />
+                <img src="/plus.png" className="w-6 h-6" alt="" />
                 <span>Thêm học sinh</span>
               </Link>
             )}
 
             {location.pathname.includes("owner") ? (
               <Link
-                to={`/classes/detail-owner/${params.id}/comments`}
+                to={`/groups/detail-owner/${params.id}/comments`}
                 className="font-medium flex gap-x-2 "
               >
-                <img src="/chat.png" className="w-6" alt="" />
+                <img src="/chat.png" className="w-6 h-6" alt="" />
                 <span>Thảo luận</span>
               </Link>
             ) : (
               <Link
-                to={`/classes/detail-attendance/${params.id}/comments`}
+                to={`/groups/detail-attendance/${params.id}/comments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/chat.png" alt="" />
+                <img src="/chat.png" className="w-6 h-6" />
                 <span>Thảo luận</span>
               </Link>
             )}
 
             {location.pathname.includes("owner") ? (
               <Link
-                to={`/classes/detail-owner/${params.id}/assignments`}
+                to={`/groups/detail-owner/${params.id}/assignments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/paper.png" className="w-6" alt="" />
+                <img src="/paper.png" className="w-6 h-6" alt="" />
                 <span>Bài tập</span>
               </Link>
             ) : (
               <Link
-                to={`/classes/detail-attendance/${params.id}/assignments`}
+                to={`/groups/detail-attendance/${params.id}/assignments`}
                 className="font-medium flex gap-x-2"
               >
-                <img src="/paper.png" className="w-6" alt="" />
+                <img src="/paper.png" className="w-6 h-6" alt="" />
                 <span>Bài tập</span>
               </Link>
             )}

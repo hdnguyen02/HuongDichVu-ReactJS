@@ -27,7 +27,7 @@ export default function Submits() {
         getAssignment()
     }, [])
 
-    return assignment && <div className="flex w-full gap-x-12">
+    return assignment && <div className="flex w-full gap-x-24">
         <div className="w-1/3">
         {/* lấy ra bài nộp */}
         {

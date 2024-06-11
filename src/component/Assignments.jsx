@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { baseUrl, version, fetchData, showToastMessage } from "../global";
+import { baseUrl, fetchData, showToastMessage } from "../global";
 import { Link, useParams, useLocation, useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 import { ToastContainer } from "react-toastify";
@@ -29,7 +29,7 @@ export default function Assignments() {
   async function handleCreateAsm(e) {
     e.preventDefault();
 
-    const url = `${baseUrl + version}/teacher/assignments`;
+    const url = `${baseUrl}/teacher/assignments`;
 
     const elFiles = document.getElementById("file");
     const file = elFiles.files[0];
@@ -62,14 +62,6 @@ export default function Assignments() {
     }
   }
 
-//   <Link
-//   to={`/teacher/classes/${params.id}/assignments/${assignment.id}`}
-//   key={index}
-  
-// >
-  
-// </Link>
-
   function getDetailAsm(id) { 
     // chuyển hướng tới .
     if (location.pathname.includes('owner')) { 
@@ -88,16 +80,14 @@ export default function Assignments() {
 
   const customStyles = {
     content: {
-      width: "700px",
-      height: "350px",
+      width: "750px",
+      height: "400px",
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      padding: "20px 42px",
-      border: "1px solid #ccc",
+      padding: "42px 42px",
       borderRadius: "8px",
-      backgroundColor: "#fff",
-      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      backgroundColor: "white",
       outline: "none",
       overflow: "auto",
     },
@@ -111,7 +101,7 @@ export default function Assignments() {
             <button
               onClick={() => setIsOpenCreateAsm(true)}
               type="submit"
-              className="p-6"
+              className="pb-3"
             >
               <img src="/plus.png" className="w-8 h-8" alt="" />
             </button>
@@ -123,7 +113,7 @@ export default function Assignments() {
             <div
               key={index}
               onClick={() => getDetailAsm(assignment.id)}
-              className="cursor-pointer mb-8 shadow-md px-8 py-3 bg-gray-100 flex items-center justify-between"
+              className="cursor-pointer mb-8 shadow-md px-8 py-5 bg-gray-100 flex items-center justify-between"
             >
               <div className="flex items-center gap-x-3">
                 <i className="fa-solid fa-file text-xl font-light"></i>
@@ -132,7 +122,7 @@ export default function Assignments() {
               </div>
 
               <span className="text-xs text-[#6D6E6E]">
-                Đã đăng vào {assignment.deadline}
+                {assignment.deadline}
               </span>
             </div>
           );
@@ -150,9 +140,9 @@ export default function Assignments() {
                 <img src="/close.png" className="w-5 h-5" alt="" />
               </button>
             </div>
-            <h3 className="text-xl text-gray-800">Tạo bài tập</h3>
+            <h3 className="text-xl text-gray-800 font-bold">Tạo bài tập</h3>
 
-            <div className="mt-6 flex gap-x-3 justify-between">
+            <div className="mt-6 flex gap-x-6 justify-between">
               <div className="flex flex-col gap-y-2 w-full">
                 <label className="text-sm text-gray-600" htmlFor="">
                   Tên
@@ -178,7 +168,7 @@ export default function Assignments() {
               </div>
             </div>
 
-            <div className="mt-5 flex gap-x-3 justify-between">
+            <div className="mt-5 flex gap-x-6 justify-between">
               <div className="flex flex-col gap-y-2 w-full">
                 <label className="text-sm text-gray-600" htmlFor="">
                   Ngày

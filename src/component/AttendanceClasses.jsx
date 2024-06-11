@@ -30,7 +30,7 @@ export default function AttendanceClass() {
         {attendanceClasses.length != 0 ?
         (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8 border-separate border-spacing-0 border-spacing-y-4">
            
-           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+           {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
                                     Tên
@@ -41,18 +41,18 @@ export default function AttendanceClass() {
                                 <th scope="col" className="px-6 py-3">
                                 </th>                       
                             </tr>
-                        </thead>
+                        </thead> */}
             <tbody>
                 {attendanceClasses.map(attendanceClass => (
-                    <tr key={attendanceClass.id} className= "mt-4 bg-[#EDEFFF]">
+                    <tr key={attendanceClass.id} className= "mt-4 bg-gray-100">
                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg">
                             {attendanceClass.name}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-5">
                             {attendanceClass.quantity} thành viên
                         </td>
-                        <td className="px-6 py-4">
-                            <Link to={'/classes/detail-attendance/' + attendanceClass.id + '/members'} className="underline text-blue-500">Chi tiết</Link>
+                        <td className="px-6 py-5">
+                            <Link to={'/groups/detail-attendance/' + attendanceClass.id + '/members'} className="underline text-blue-500">Chi tiết</Link>
                         </td>   
                     </tr>
                 ))}

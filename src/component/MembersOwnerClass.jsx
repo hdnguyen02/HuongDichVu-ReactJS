@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { fetchData } from "../global";
 
-export default function MembersClass() {
+export default function MembersOwnerClass() {
   const location = useLocation();
 
   const [group, setGroup] = useState()
@@ -35,36 +35,36 @@ export default function MembersClass() {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8 border-separate border-spacing-0 border-spacing-y-4">
            
             <tbody>
-              <tr className="mt-4 bg-[#F0F6F6]">
+              <tr className="bg-[#F0F6F6]">
                 <td
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg"
+                  className="px-6 py-5 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg"
                 >
                   {group.owner.email}
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-5">
                   <span className="font-bold">Giáo viên</span>
                   <i className="fa-solid fa-key ml-2"></i>
                 </td>
 
-                <td className="px-6 py-4 text-center rounded-tr-lg rounded-br-lg"></td>
+                <td className="px-6 py-5 text-center rounded-tr-lg rounded-br-lg"></td>
               </tr>
 
               {group.userGroups.map((member, index) => (
                 <tr key={index} className="mt-4 bg-[#EDEFFF]">
                   <td
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg"
+                    className="px-6 py-5 font-medium text-gray-900 whitespace-nowrap rounded-tl-lg rounded-bl-lg"
                   >
                     {member.email}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <span className="font-bold">Học sinh</span>
                     <i class="fa-regular fa-user ml-3"></i>
                    </td>
 
                   {
-                    location.pathname.includes('owner')  ? (<td className="px-6 py-4 text-center rounded-tr-lg rounded-br-lg">
+                    location.pathname.includes('owner')  ? (<td className="px-6 py-5 text-center rounded-tr-lg rounded-br-lg">
                     <Link className="underline text-red-500">
                       <i className="fa-regular fa-trash-can text-xl"></i>
                     </Link>

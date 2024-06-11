@@ -1,15 +1,9 @@
 import { toast } from "react-toastify";
 
-export const baseUrl = "http://localhost:8080"
-export const authSignInUrl = "/api/v1/auth/sign-in"
-export const authSignUpUrl = "/api/v1/auth/sign-up"
-export const authSignOutUrl = "/api/v1/auth/sign-out"
-export const userInfoUrl = "/api/v1/users"
-export const version = "/api/v1"
-
+export const baseUrl = "http://localhost:8080/api/v1"
 
 export async function fetchData(subUrl, method, body) {
-    const url =  `${baseUrl + version}${subUrl}`
+    const url = `${baseUrl}${subUrl}`
     const accessToken = localStorage.getItem('accessToken') 
     if (!accessToken) throw new Error("Access token is missing")
 
@@ -40,7 +34,7 @@ export async function fetchData(subUrl, method, body) {
 
 
 export async function fetchDataWithoutAccessToken(subUrl, method, body) {
-    const url = `${baseUrl + version}${subUrl}`
+    const url = `${baseUrl}${subUrl}`
 
 
     const options = { 

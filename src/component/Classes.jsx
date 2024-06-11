@@ -2,12 +2,13 @@ import {  useState, useEffect } from 'react'
 import { fetchData } from '../global'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import Modal from 'react-modal'
+import useAuth from '../context/AuthContext'
 
 const Classes = () => {
 
+  const { auth } = useAuth()
+
   const roles = JSON.parse(localStorage.getItem('roles'))
-
-
   const appElement = document.getElementById('root')
   Modal.setAppElement(appElement)
   const [isOpenCreateClass, setIsOpenCreateClass] = useState(false)
@@ -56,7 +57,7 @@ const Classes = () => {
 
   return (
     <div>
-      <div className='profile flex gap-x-3 items-center justify-end font-medium pb-2'>
+      <div className='profile flex gap-x-3 items-center justify-end font-medium h-12'>
         <div className='flex gap-x-8 items-center'>
           <button className=''>
             <img
@@ -97,7 +98,7 @@ const Classes = () => {
         </div>
       </div>
 
-      <hr className='my-4'></hr>
+      <hr className='my-8'></hr>
 
       
         <div className=''>
@@ -108,14 +109,14 @@ const Classes = () => {
                   <li className='font-medium flex gap-x-2'>
                     <Link
                       className={
-                        location.pathname.includes('classes/owner')
+                        location.pathname.includes('groups/owner')
                           ? 'link-active'
                           : ''
                       }
-                      to={'/classes/owner'}
+                      to={'/groups/owner'}
                     >
                       <span>Lớp học của bạn</span>
-                      {!roles.includes('TEACHER') && (
+                      {!auth?.roles.includes('TEACHER') && (
                         <i class='fa-solid fa-lock text-black ml-2'></i>
                       )}
                     </Link>
@@ -124,11 +125,11 @@ const Classes = () => {
                   <li className='font-medium flex gap-x-2'>
                   <Link
                       className={
-                        location.pathname.includes('classes/attendance')
+                        location.pathname.includes('groups/attendance')
                           ? 'link-active'
                           : ''
                       }
-                      to={'/classes/attendance'}
+                      to={'/groups/attendance'}
                     >
                       Tham gia lớp học
                     </Link>

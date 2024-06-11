@@ -108,7 +108,8 @@ input[type="file"] {
 }
 
 .link-active-mobile {
-  color: #F8B63B;
+  color: white;
+  font-weight: 900;
 }
 
 /* Chỉ áp dụng cho trình duyệt WebKit như Chrome, Safari */

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import {baseUrl,version, fetchData } from '../global'
+import {baseUrl, fetchData } from '../global'
 import { useParams } from 'react-router-dom'
 
 function Card() {
@@ -97,7 +97,7 @@ function Card() {
         else { 
             formData.append('isFavourite', true) 
         }
-        const url = `${baseUrl + version}/cards/${id}`
+        const url = `${baseUrl}/cards/${id}`
         try {
             const jsonRp = await fetch(url, {
                 method: 'PUT',

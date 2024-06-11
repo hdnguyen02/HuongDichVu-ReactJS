@@ -28,6 +28,7 @@ export default function CommentClass() {
     const subUrl = "/comments";
     const body = {
       groupId: params.id,
+
       parentId: null, // bình luận cấp 1
       content: contentComment,
     };
@@ -131,7 +132,7 @@ export default function CommentClass() {
                 </div>
                 {/* <span className="text-gray-500 text-sm">12h ago</span> */}
               </div>
-              <div className="mt-1 text-gray-500">{comment.content}</div>
+              <div className="mt-1 text-gray-800 font-bold">{comment.content}</div>
               <button
                 onClick={() => showReplyComment(comment.id)}
                 className="flex gap-x-2 items-center"
@@ -156,7 +157,7 @@ export default function CommentClass() {
                       </div>
                       {/* <span className="text-gray-500 text-sm">12h ago</span> */}
                     </div>
-                    <div className="mt-1 text-gray-500">
+                    <div className="mt-1 text-gray-600 font-bold">
                       {commentChild.content}
                     </div>
                   </div>

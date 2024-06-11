@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { baseUrl, version, fetchData } from "../global"
+import { baseUrl, fetchData } from "../global"
 
 const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
 
@@ -33,7 +33,7 @@ const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
     async function handleEditCard(event) {
         event.preventDefault()
         
-        const url = `${baseUrl + version}/cards/${card.id}`
+        const url = `${baseUrl}/cards/${card.id}`
         const formData = new FormData()
 
         const inputTermCard = document.getElementById('card-term')
@@ -82,7 +82,7 @@ const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
     }));
 
     return (isShow && card && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
-        <div className="bg-white p-6 rounded shadow-lg z-50">
+        <div className="bg-white p-6 rounded-lg shadow z-50">
             <div className="flex justify-end">
                 <button onClick={close} className="pr-2">
                     <i className="fa-solid fa-xmark text-4xl text-gray-500"></i>

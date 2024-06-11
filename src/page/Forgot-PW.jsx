@@ -1,37 +1,31 @@
 
 import Success from '../component/Success'
 import Fail from '../component/Fail'
-import { baseUrl } from '../global'
-import { useRef } from 'react'
+import { fetchDataWithoutAccessToken,showToastMessage, showToastError } from '../global'
+import { useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 
 
 export default function ForgotPW() {
 
-    const failRef = useRef()
-    const successRef = useRef()
+    const [email, setEmail] = useState()
 
 
 
     async function handleForgotPW(event) {
         event.preventDefault()
-        const elEmail = document.getElementById('email')
+        const subUrl = '/forgot-password'
+        const body = { 
+            email
+        }
         try {
-            const url = baseUrl + '/forgot-password'
-            const jsonRp = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: elEmail.value })
-            })
-            const response = await jsonRp.json()
-            if (!jsonRp.ok) {
-                throw new Error(response.message)
-            }
-            successRef.current.show(response.message, 2000)
+            const { message } = await fetchDataWithoutAccessToken(subUrl, 'POST', body)
+            console.log(message)
+            showToastMessage(message)
         }
         catch (error) {
-            successRef.current.show(error.message, 2000)
+           const message = {error}
+           showToastError(message)
         }
     }
 
@@ -48,9 +42,8 @@ export default function ForgotPW() {
                 <div>
                     <label className='text-sm' htmlFor="email">Email</label>
                     <input
+                        onChange={event => setEmail(event.target.value)}
                         type="email"
-                        id="email"
-                        name="email"
                         className="w-full rounded-md py-2 px-3 mt-2"
                         placeholder='name@gmail.com'
                         required
@@ -60,8 +53,7 @@ export default function ForgotPW() {
 
 
             </form>
-            < Success ref={successRef} />
-            < Fail ref={failRef} />
+            <ToastContainer/>
         </div>
     )
 }
