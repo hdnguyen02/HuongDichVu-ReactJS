@@ -1,7 +1,8 @@
 
 import React from 'react'
 
-function DeleteDeck({handleCancle, handleDeleteDeck, idDeckDelete}) {
+function DeleteDeck({handleCancle, handleDeleteDeck}) {
+
 
 
     return <div id="popup-delete-deck" className="fixed top-0 left-0 w-full h-full hidden">

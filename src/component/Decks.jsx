@@ -6,7 +6,7 @@ import DeleteDeck from './DeleteDeck'
 import Success from './Success'
 import Fail from './Fail'
 import ModalCreateDeck from './ModalCreateDeck'
-import ModelEditDeck from './ModelEditDeck'
+import ModalEditDeck from './ModalEditDeck'
 import Modal from "react-modal"
 
 function Decks() {
@@ -20,7 +20,7 @@ function Decks() {
     const refSuccess = useRef()
     const refFail = useRef()
     const refModalCreateDeck = useRef()
-    const refModelEditDeck = useRef()
+    const refModalEditDeck = useRef()
     const [idDeckDelete, setIdDeckDelete] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
     
@@ -95,7 +95,7 @@ function Decks() {
     }
 
     function handleEditDeck(id) {
-        refModelEditDeck.current.show(id)
+        refModalEditDeck.current.show(id)
     }
 
     function handleLearnCard(numberCards, idDeck) { 
@@ -118,7 +118,7 @@ function Decks() {
 
     return <div>
         <ModalCreateDeck ref={refModalCreateDeck} getDecks={getDecks} />
-        <ModelEditDeck ref={refModelEditDeck} getDecks={getDecks} />
+        <ModalEditDeck ref={refModalEditDeck} getDecks={getDecks} />
         <div className='profile flex gap-x-3 items-center justify-end font-medium h-12'>
             <div className='flex gap-x-8 items-center'>
                 <button onClick={() => { refModalCreateDeck.current.show() }} className=''>
@@ -147,21 +147,23 @@ function Decks() {
 
                     {decks.length != 0 ?
                         (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8">
-                            {/* <thead className="text-gray-700 uppercase">
+                           {/* <thead className="text-sm text-gray-700 uppercase">
                                 <tr>
-                                    <th scope="col" className="px-8 pt-4 pb-6">
-                                        Tên
+                                  
+                                    <th scope="col" className="px-8 py-5">
+                                        Thuật ngữ
                                     </th>
-                                    <th scope="col" className="px-8 pt-4 pb-6">
-                                        Thẻ
+                                    <th scope="col" className="px-8 py-5">
+                                        Định nghĩa
                                     </th>
-                                    <th scope="col" className="px-8 pt-4 pb-6">
-                                        Ngày tạo    
+                                    <th scope="col" className="px-8 py-5">
+                                        Bộ thẻ
                                     </th>
-                                    <th className="px-8 pt-4 pb-6"></th>
-                     
-
-                                </tr>
+                                    <th scope="col" className="px-8 py-5 text-end">
+                                        Ngày tạo
+                                    </th>
+                                
+                                </tr>   
                             </thead> */}
                             <tbody>
                                 {decks.map((deck, index) => (
@@ -199,7 +201,7 @@ function Decks() {
                             <span className='text-sm'>Không có dữ liệu</span>
                         </div>)
                     }
-                    <hr className='my-4' />
+                    {/* <hr className='my-4' /> */}
                 </div>
 
                 {/* ))} */}

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { fetchDataWithoutAccessToken, showToastError } from '../global'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import useAuth from '../context/AuthContext'
 
 function SignUp() {
   let isShowPassword = false
   
-
+  const { checkAuth } = useAuth()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState()
@@ -20,7 +21,6 @@ function SignUp() {
     if (isShowPassword) { 
       elPassword.type = 'password'
       elViewPassword.src = '/hide.png'
-      
     }
     else {
       elPassword.type = 'text'
@@ -37,9 +37,7 @@ function SignUp() {
       const response = await fetchDataWithoutAccessToken(subUrl, 'POST', body)
       const auth = response.data
       localStorage.setItem('accessToken', auth.accessToken)
-      localStorage.setItem('isAuthenticated', true)
-      localStorage.setItem('email', auth.user.email)
-      localStorage.setItem('roles', JSON.stringify(auth.user.roles))
+      checkAuth()
       navigate('/')
     }
     catch(error) { 

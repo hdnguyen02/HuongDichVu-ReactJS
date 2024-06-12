@@ -352,7 +352,7 @@ export default function Cards() {
                             <span className='text-sm'>Không có dữ liệu</span>
                         </div>)
                     }
-                    <hr className='my-4' />
+                    {/* <hr className='my-4' /> */}
                 </div>
             </div>
         }

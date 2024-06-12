@@ -8,7 +8,8 @@ const Classes = () => {
 
   const { auth } = useAuth()
 
-  const roles = JSON.parse(localStorage.getItem('roles'))
+  const [name, setName] = useState()
+  const [desc, setDesc] = useState()
   const appElement = document.getElementById('root')
   Modal.setAppElement(appElement)
   const [isOpenCreateClass, setIsOpenCreateClass] = useState(false)
@@ -40,8 +41,8 @@ const Classes = () => {
 
     const subUrl = '/groups'
     const body = {
-      name: nameClassCreate,
-      description: decsClassCreate,
+      name,
+      description: desc,
     }
 
     try {
@@ -117,7 +118,7 @@ const Classes = () => {
                     >
                       <span>Lớp học của bạn</span>
                       {!auth?.roles.includes('TEACHER') && (
-                        <i class='fa-solid fa-lock text-black ml-2'></i>
+                        <i className='fa-solid fa-lock text-black ml-2'></i>
                       )}
                     </Link>
                   </li>

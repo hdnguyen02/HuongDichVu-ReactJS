@@ -1,15 +1,14 @@
 import React, { useRef, useState } from "react"
-import { fetchData } from "../global"
-import Success from "./Success"
-import Fail from "./Fail"
+import { fetchData, showToastMessage, showToastError } from "../global"
+import { ToastContainer } from "react-toastify"
 
 const ModelEditDeck = React.forwardRef(({ getDecks }, ref) => {
 
     const [isShow, setIsShow] = useState(false)
     const [id, setId] = useState()
     const [deck, setDeck] = useState()
-    const refSuccess = useRef()
-    const refFail = useRef()
+    const [name, setName] = useState()
+    const [description, setDescription] = useState()
 
     async function show(idDeck) {
         setId(idDeck)
@@ -28,25 +27,22 @@ const ModelEditDeck = React.forwardRef(({ getDecks }, ref) => {
             setDeck(response.data)
         }
         catch(error) { 
-            console.log(error.message)
+            showToastError(error.message)
         }
     }
 
     async function handleEditDeck(event) {
         event.preventDefault()
         const subUrl = `/decks/${id}` 
-        const inputName = document.getElementById('name-deck')
-        const inputDescription = document.getElementById('description-deck')
-        const name = inputName.value
-        const description = inputDescription.value
+      
         const body = {name, description}
         try { 
             await fetchData(subUrl, 'PUT', body)
             await getDecks()
-            refSuccess.current.show('Hiệu chỉnh bộ thẻ thành công', 2000)
+            showToastMessage('Hiệu chỉnh bộ thẻ thành công')
         }
         catch(error) {
-            refFail.current.show('Đã có lỗi xảy ra!', 2000)
+            showToastError('Đã có lỗi xảy ra')
         }
     }
 
@@ -68,11 +64,11 @@ const ModelEditDeck = React.forwardRef(({ getDecks }, ref) => {
                     <div className="p-4 md:p-5 space-y-4">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900">Tên bộ thẻ <span className='text-ctred'>*</span></label>
-                            <input defaultValue={deck.name} id='name-deck' type="text" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="English" />
+                            <input defaultValue={deck.name} onChange={event => setName(event.target.value)} id='name-deck' type="text" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="English" />
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900">Mô tả bộ thẻ</label>
-                            <input defaultValue={deck.description} id='description-deck' type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                            <input defaultValue={deck.description} onChange={event => setDescription(event.target.value)} id='description-deck' type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
                     </div>
                     <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b">
@@ -81,8 +77,7 @@ const ModelEditDeck = React.forwardRef(({ getDecks }, ref) => {
                 </form>
             </div>
         </div>
-        <Success ref={refSuccess}/>
-        <Fail ref={refFail}/>
+        <ToastContainer/>
     </div>)
 })
 

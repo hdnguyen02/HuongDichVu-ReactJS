@@ -14,10 +14,23 @@ export default function OwnerClasses() {
 
 
 
-    // const [nameClass, setNameClass] = useState()
-    // const [descriptionClass, setDescriptionClass] = useState()
+
+
+    async function handlePayment() { 
+        // số tiền 299k => gửi trả về lại cho người dùng. 
+        const email = auth.email
+        const subUrl = `/payment?email=${email}`
+        try { 
+            const {data} = await fetchData(subUrl, 'GET')
+            const urlPayment = data
+            window.open(urlPayment, '_blank');
+
+        }
+        catch(error) { 
+            console.log(error.message)
+        }
     
-    // const [isOpenEditClass, setIsOpenEditClass] = useState(false)
+    }
 
 
 
@@ -25,9 +38,6 @@ export default function OwnerClasses() {
         const subUrl = `/groups/owner`
         try {
             const response = await fetchData(subUrl, 'GET')
-            const {data} = response
-            console.log(data)
-            console.log(response.data)
             setOwnerClasses(response.data)
         }
         catch (error) {
@@ -54,7 +64,7 @@ export default function OwnerClasses() {
              <h1 className="text-3xl font-bold text-center">Online learning - Dành cho giáo viên</h1>
 
             <div className="flex justify-center">
-            <button className='gap-x-2 flex items-center h-10 px-8 text-sm text-center rounded-md font-bold bg-yellow-400 sm:w-fit hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-200'>
+            <button onClick={handlePayment} className='gap-x-2 flex items-center h-10 px-8 text-sm text-center rounded-md font-bold bg-yellow-400 sm:w-fit hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-200'>
                     
                     <span className='text-sm'>Mua</span>
                     <i className="fa-solid fa-unlock"></i>
@@ -67,7 +77,7 @@ export default function OwnerClasses() {
 
 
     return ownerClasses ? (<div>
-        {ownerClasses.length != 0 ?
+        {ownerClasses?.length != 0 ?
             (<table className="w-full text-sm text-left rtl:text-right text-gray-500 pb-8 border-separate border-spacing-0 border-spacing-y-4">
                 {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>

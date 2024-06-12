@@ -29,8 +29,8 @@ const ModelCreateDeck = React.forwardRef(({ getDecks }, ref) => {
             await fetchData(subUrl, 'POST', body)
             await getDecks()
             showToastMessage("Tạo bộ thẻ thành công")
-            setName('')
-            setDesc('')
+            document.getElementById('name-deck').value = ''
+            document.getElementById('decs-deck').value = ''
         }
         catch(error) {
             showToastMessage(error.message)
@@ -56,11 +56,11 @@ const ModelCreateDeck = React.forwardRef(({ getDecks }, ref) => {
                     <div className="p-4 md:p-5 space-y-4">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900">Tên bộ thẻ <span className='text-ctred'>*</span></label>
-                            <input onChange={event => setName(event.target.value)} type="text" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="English" />
+                            <input onChange={event => setName(event.target.value)} id="name-deck" type="text" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="English" />
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900">Mô tả bộ thẻ</label>
-                            <input onChange={event => setDesc(event.target.value)} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                            <input onChange={event => setDesc(event.target.value)} id="decs-deck" type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
                     </div>
                     <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b">
