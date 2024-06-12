@@ -1,6 +1,9 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import useAuth from '../context/AuthContext'
 
 function Settings() {
+  
+  const { auth } = useAuth()
   
   const location = useLocation()
   function handleShowSideBar() {
@@ -12,10 +15,16 @@ function Settings() {
 
   return <div className=''>
     {/* sidebar */}
-    <div id='side-bar' className=' z-10 selection:hidden md:block bg-blue-600 text-[#E2E0DE] h-screen w-[230px] px-6 py-12 fixed top-0 bottom-0'>
+    <div id='side-bar' className=' z-10 selection:hidden md:block bg-blue-600 text-white h-screen w-[230px] px-6 fixed top-0 bottom-0'>
         {/* <h1 className='font-medium text-3xl'>Cài đặt</h1> */}
         <button onClick={handleCloseSideBar} className='md:hidden absolute top-[48px] right-6'><i className="fa-solid fa-xmark text-3xl"></i></button>
         <ul className='mt-8 flex flex-col gap-y-3'>
+
+            <li>
+            <div className='dropdown-btn h-28 w-28 rounded-full overflow-hidden cursor-pointer'>
+              <img src={auth.avatar} className='w-full h-full' loading="lazy" alt='' />
+            </div>
+            </li>
             
             <li className='flex items-center gap-x-3'>
 

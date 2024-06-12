@@ -2,20 +2,16 @@
 import { useEffect, useRef, useState } from "react"
 import { baseUrl, fetchData, showToastMessage, showToastError } from "../global"
 import { ToastContainer } from "react-toastify"
+import useAuth from "../context/AuthContext"
 
 export default function InfoUser() {
 
-    let isChangeAvatar = false
+
+    const {auth, checkAuth, setAuth} = useAuth()
+
     const [user, setUser] = useState()
     async function getUser() {
-        const subUrl = '/users/info'
-        try {
-            const response = await fetchData(subUrl, 'GET')
-            setUser(response.data)
-        }
-        catch (error) {
-            showToastError(error.message)
-        }
+        setUser(auth)
     }
 
 
@@ -23,7 +19,6 @@ export default function InfoUser() {
         event.preventDefault()
         const accessToken = localStorage.getItem('accessToken')
         const url = `${baseUrl}/users/info`
-        console.log(url)
         const elName = document.getElementById('name')
         const elGender = document.getElementById('gender')
         const elAge = document.getElementById('age')
@@ -47,10 +42,12 @@ export default function InfoUser() {
                     'Authorization': `Bearer ${accessToken}`
                 },
             })
-            const response = await jsonRp.json()
+            const {data, message} = await jsonRp.json()
             if (!jsonRp.ok) {
-                throw new Error(response.message)
+                throw new Error(message)
             }
+            checkAuth()
+            console.log(setAuth)
             showToastMessage('Hiệu chỉnh thông tin thành công')
         
         }
@@ -59,15 +56,7 @@ export default function InfoUser() {
         }
     }
 
-    function handleUploadAvatar(event) {
-        isChangeAvatar = true
-        const file = event.target.files[0]
-        const reader = new FileReader()
-        reader.onload = function (e) {
-            document.getElementById('avatar').src = e.target.result;
-        }
-        reader.readAsDataURL(file)
-    }
+    
 
     useEffect(() => {
         getUser()
@@ -201,7 +190,7 @@ export default function InfoUser() {
                 <div>
                     <label>
                         <span className="mr-4">Tải lên ảnh đại diện</span>
-                        <input onChange={handleUploadAvatar} name="avatar" id="input-avatar" type="file" accept="image/*" className="border-0" />
+                        <input name="avatar" id="input-avatar" type="file" accept="image/*" className="border-0" />
                     </label>
                 </div>
                 <div className="mt-6 flex justify-end">
