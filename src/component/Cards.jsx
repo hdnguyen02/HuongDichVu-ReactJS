@@ -164,7 +164,7 @@ export default function Cards() {
 
 
     function dropdownFilter() {
-        return <form className='menu-dropdown hidden z-10 border px-8 pt-10 pb-16 origin-top-right absolute left-0 mt-2 w-[360px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        return <form className='menu-dropdown hidden z-10 border px-8 pt-10 pb-16 origin-top-right absolute left-0 w-[360px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
             <div className='flex justify-between'>
                 <span className='text-xl font-medium'>Filters</span>
                 <button type='button' onClick={handleDeleteFilter} className='text-sm text-red-500 underline'>delete filter</button>

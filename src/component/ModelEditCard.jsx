@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import { baseUrl, fetchData } from "../global"
+import { showToastError, showToastMessage } from "../global"
+import { ToastContainer } from "react-toastify"
 
 const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
 
@@ -63,17 +65,16 @@ const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
                 },
                 body: formData
             })
-            const response = await jsonRp.json()
+            const {message} = await jsonRp.json()
             if (!jsonRp.ok) {
-                throw new Error(response.message)
+                throw new Error(message)
             }
-            setMessageCss({'color': 'green'})
-            setMessage(response.message)
+            showToastMessage(message)
             getCards()
         }
         catch (error) {
-            setMessageCss({'color': 'red'})
-            setMessage('Đã có lỗi xảy ra!')
+            const {message} = error
+            showToastError(message)
         }
     }
 
@@ -155,6 +156,7 @@ const ModelEditCard = React.forwardRef(({ decks, getCards }, ref) => {
                 </div>
             </form>
         </div>
+        <ToastContainer/>
     </div>)
 })
 

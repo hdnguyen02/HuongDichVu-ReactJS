@@ -47,7 +47,6 @@ export default function InfoUser() {
                 throw new Error(message)
             }
             checkAuth()
-            console.log(setAuth)
             showToastMessage('Hiệu chỉnh thông tin thành công')
         
         }

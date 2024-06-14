@@ -65,10 +65,10 @@ export default function Assignments() {
   function getDetailAsm(id) { 
     // chuyển hướng tới .
     if (location.pathname.includes('owner')) { 
-      navigate(`/teacher/classes/${params.id}/assignments/${id}`)
+      navigate(`/teacher/groups/${params.id}/assignments/${id}`)
     }
     else {
-       navigate(`/student/classes/${params.id}/assignments/${id}`)
+       navigate(`/student/groups/${params.id}/assignments/${id}`)
     }
   } 
 

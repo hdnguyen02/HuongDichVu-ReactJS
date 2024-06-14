@@ -10,9 +10,11 @@ export default function AssignmentTeacher() {
 
     return <div className='mx-4 md:mx-24 mt-28'>
     { 
-        location.pathname.includes('teacher') &&   <nav className="font-medium flex gap-x-3">
-        <Link to={`/teacher/classes/${params.idClass}/assignments/${params.idAssignment}`}>Bài tập</Link>|
-        <Link to={`/teacher/classes/${params.idClass}/assignments/${params.idAssignment}/submits`}>Nộp bài</Link>
+        location.pathname.includes('teacher') && <nav className="font-medium flex gap-x-3">
+        {/* nếu có submits -> tiến hành*/}
+        
+        <Link to={`/teacher/groups/${params.idClass}/assignments/${params.idAssignment}`}>Bài tập</Link>|
+        <Link to={`/teacher/groups/${params.idClass}/assignments/${params.idAssignment}/submits`}>Nộp bài</Link>
     </nav>
     }
       

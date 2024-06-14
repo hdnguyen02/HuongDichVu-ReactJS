@@ -91,7 +91,8 @@ export default function DetailAssignment() {
         <div className="flex justify-center">
           <iframe
             className="w-[900px] h-screen"
-            src="https://firebasestorage.googleapis.com/v0/b/learn-engl.appspot.com/o/assignment%2F1717510452882-CV%20H%E1%BB%93%20%C4%90%E1%BB%A9c%20Nguy%C3%AAn.pdf?alt=media"
+            src={assignment.url}
+            loading="lazy"
             title="Iframe Example"
           ></iframe>
         </div>

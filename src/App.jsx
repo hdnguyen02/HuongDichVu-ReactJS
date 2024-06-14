@@ -43,12 +43,12 @@ function App() {
           {/* private router */}
           <Route element={<PrivateRoutes />}>
 
-            <Route path='/teacher/classes/:idClass/assignments/:idAssignment' element={<AssignmentTeacher />}>
+            <Route path='/teacher/groups/:idClass/assignments/:idAssignment' element={<AssignmentTeacher />}>
               <Route path='' element={<DetailAssignment />}> </Route>
               <Route path='submits' element={<Submits />}> </Route>
             </Route>
 
-            <Route path='/student/classes/:idClass/assignments/:idAssignment' element={<AssignmentTeacher />}>
+            <Route path='/student/groups/:idClass/assignments/:idAssignment' element={<AssignmentTeacher />}>
               <Route path='' element={<DetailAssignment />}> </Route>
             </Route>
 

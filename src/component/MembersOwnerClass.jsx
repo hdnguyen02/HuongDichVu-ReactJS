@@ -60,7 +60,7 @@ export default function MembersOwnerClass() {
                   </td>
                   <td className="px-6 py-5">
                     <span className="font-bold">Học sinh</span>
-                    <i class="fa-regular fa-user ml-3"></i>
+                    <i className="fa-regular fa-user ml-3"></i>
                    </td>
 
                   {

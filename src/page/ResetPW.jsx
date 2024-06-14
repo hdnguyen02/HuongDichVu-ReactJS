@@ -1,24 +1,19 @@
 
-import Success from '../component/Success'
-import Fail from '../component/Fail'
-import { baseUrl } from '../global'
-import { useRef } from 'react'
+import { fetchData, showToastMessage, showToastError } from '../global'
+import { ToastContainer } from 'react-toastify'
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 export default function ForgotPW() {
 
-    const failRef = useRef()
-    const successRef = useRef()
     const location = useLocation()
 
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     async function handleResetPW(event) {
         event.preventDefault()
 
-
-        // lấy ra token để có thể gửi lên. 
-        const newPassword = document.getElementById('new-password').value
-        const confirmPassword = document.getElementById('confirm-password').value
         if (newPassword !== confirmPassword) {
             
             failRef.current.show('Mật khẩu mới và mật khẩu xác nhận không trùng nhau!')
@@ -30,29 +25,18 @@ export default function ForgotPW() {
 
         
         try {
-            const url = baseUrl + '/api/v1/reset-password'
-            const jsonRp = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', 
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({ newPassword, accessToken })
-            })
-            const response = await jsonRp.json()
-                if (!jsonRp.ok) {
-                    throw new Error(response.message)
-                }
-                successRef.current.show(response.message, 2000)
+            const subUrl = '/reset-password'
+            const body = {
+                newPassword, accessToken
+            }
+            const {message} = await fetchData(subUrl, 'POST', body)
+            showToastMessage(message)
             }
             catch (error) {
-                successRef.current.show(error.message, 2000)
+                const {message} = error
+                showToastError(message)
             }
     }
-
-
-
-
 
 
     return (
@@ -63,9 +47,8 @@ export default function ForgotPW() {
                 <div>
                     <label className='text-sm' htmlFor="email">Mật khẩu</label>
                     <input
+                        onChange={event => setNewPassword(event.target.value)}
                         type="password"
-                        id="new-password"
-                        name="newPassworđ"
                         className="w-full rounded-md py-2 px-3 mt-2"
                         required
                         minLength={6}
@@ -74,20 +57,16 @@ export default function ForgotPW() {
                 <div>
                     <label className='text-sm' htmlFor="email">Xác nhận mật khẩu</label>
                     <input
+                        onChange={event => setConfirmPassword(event.target.value)}
                         type="password"
-                        id="confirm-password"
-                        name="confirmPassword"
                         className="w-full rounded-md py-2 px-3 mt-2"
                         required
                         minLength={6}
                     />
                 </div>
                 <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Gửi</button>
-
-
             </form>
-            < Success ref={successRef} />
-            < Fail ref={failRef} />
+            <ToastContainer/>
         </div>
     )
 }

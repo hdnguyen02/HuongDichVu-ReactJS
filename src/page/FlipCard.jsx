@@ -70,7 +70,7 @@ function Card() {
         return <div className='h-full relative flex flex-col items-center justify-center'>
             {action()}
             {cards[index].image && <div className="h-40 flex justify-center">
-                <img className="object-contain" src={cards[index].image} />
+                <img className="object-contain" src={cards[index].image} loading="lazy"/>
             </div>}
             <p className="text-2xl text-center">{cards[index].term}</p>
         </div>

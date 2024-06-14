@@ -27,7 +27,7 @@ export default function Submits() {
         getAssignment()
     }, [])
 
-    return assignment && <div className="flex w-full gap-x-24">
+    return assignment ? (<div className="flex w-full gap-x-24">
         <div className="w-1/3">
         {/* lấy ra bài nộp */}
         {
@@ -48,5 +48,5 @@ export default function Submits() {
         <div className="w-full">
         <iframe className="w-full h-screen" src={urlPdf} title="Iframe Example"></iframe>
         </div>
-    </div>
+    </div>): (<div>0 đã nộp</div>)
 }

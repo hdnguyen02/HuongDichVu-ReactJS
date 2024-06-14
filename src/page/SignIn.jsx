@@ -70,6 +70,7 @@ export default function SignIn() {
     <img
       src="/touann-gatouillat-vergos-dSBJv66Yjlk-unsplash.jpg"
       alt="login image"
+      loading="lazy"
       className="object-cover w-full h-full"
     />
   </div>

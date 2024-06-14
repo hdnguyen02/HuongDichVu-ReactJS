@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   
 
   const expose = {
-    auth, checkAuth, signOut
+    auth, checkAuth, signOut, setAuth
   }
   
 

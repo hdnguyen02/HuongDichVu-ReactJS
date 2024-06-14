@@ -48,7 +48,7 @@ const Classes = () => {
     try {
       await fetchData(subUrl, 'POST', body)
     } catch (error) {
-      console.log(error.message)
+  
     }
   }
 

@@ -1,16 +1,24 @@
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../context/AuthContext'
 
 function Settings() {
   
-  const { auth } = useAuth()
-  
+  const { auth, signOut } = useAuth()
+
+
   const location = useLocation()
+  const navigate = useNavigate()
+  
   function handleShowSideBar() {
     document.getElementById('side-bar').style.display = 'block'
   }
   function handleCloseSideBar() {
     document.getElementById('side-bar').style.display = 'none'
+  }
+
+  function handleSignOut() { 
+    signOut() 
+    navigate('/')
   }
 
   return <div className=''>
@@ -42,7 +50,7 @@ function Settings() {
             <hr className='opacity-10'/>
             <li className='flex gap-x-3 items-center'>
 
-                <button>Đăng xuất</button>
+                <button onClick={handleSignOut}>Đăng xuất</button>
             </li>
         </ul>
     </div>
